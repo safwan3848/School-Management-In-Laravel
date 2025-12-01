@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactUsController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\AuthController;
@@ -97,5 +98,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/{id}', [AdminCareerController::class, 'show'])->name('career.show');
         Route::post('/status/{id}', [AdminCareerController::class, 'updateStatus'])
             ->name('career.updateStatus');
+    });
+
+     // Faq
+    Route::prefix('faq')->group(function () {
+        Route::get('/', [FaqController::class, 'index'])->name('faq.index');          // List faqs
+        Route::get('/create', [FaqController::class, 'create'])->name('faq.create');  // Create faq page
+        Route::post('/store', [FaqController::class, 'store'])->name('faq.store');    // Save faq
+        Route::get('/edit/{id}', [FaqController::class, 'edit'])->name('faq.edit');   // Edit faq page
+        Route::post('/update/{id}', [FaqController::class, 'update'])->name('faq.update'); // Update faq
+        Route::get('/delete/{id}', [FaqController::class, 'delete'])->name('faq.delete'); // delete faq
+        Route::get('/show/{id}', [FaqController::class, 'show'])->name('faq.show');
+
     });
 });

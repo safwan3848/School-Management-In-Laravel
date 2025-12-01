@@ -66,4 +66,12 @@
             <span>Careers</span>
         </a>
     </li>
+
+    {{-- FAQ --}}
+    <li class="nav-item {{ request()->routeIs('faq.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('faq.index') }}">
+            <i class="fas fa-question-circle"></i>
+            <span>FAQs</span>
+        </a>
+    </li>
 </ul>
