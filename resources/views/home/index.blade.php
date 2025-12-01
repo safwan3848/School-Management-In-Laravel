@@ -44,8 +44,12 @@
         @include('home.testimonials')
         {{-- Testimonials section end --}}
 
+        {{-- top Management section start --}}
+        @include('home.top_management')
+        {{-- top Management section end --}}
+
         {{-- choose us section start --}}
-        @include('home.choose_us')
+        {{-- @include('home.choose_us') --}}
         {{-- choose us section end --}}
 
         {{-- contact us section start --}}

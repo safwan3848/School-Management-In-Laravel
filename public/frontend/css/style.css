@@ -1177,3 +1177,165 @@ h1, h2, h3, h4, h5,
         font-size: 15px;
         color: #555;
     }
+
+    /* Card styling */
+.management-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transition: 0.3s ease-in-out;
+}
+
+.management-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
+}
+
+/* Photo styling */
+.photo-wrapper {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px auto;
+    overflow: hidden;
+    border-radius: 50%;
+    border: 4px solid #1cc88a;
+    padding: 3px;
+    background: white;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Typography */
+.name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.designation {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.message {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Optional: Add a subtle shape behind the slider */
+#top-management-section::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(28, 200, 138, 0.2);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+#top-management-section::after {
+    content: "";
+    position: absolute;
+    bottom: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(0, 123, 255, 0.15);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Ensure cards are above shapes */
+.management-card {
+    position: relative;
+    z-index: 1;
+}
+/* Card container */
+.teacher-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    z-index: 1;
+}
+
+.teacher-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Photo styling */
+.photo-wrapper {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #6c63ff;
+    background: #fff;
+    padding: 3px;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Typography */
+.name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.designation {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #6c63ff;
+    margin-bottom: 10px;
+}
+
+.bio {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Optional: subtle background shape */
+#teachers-section::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    left: -60px;
+    width: 180px;
+    height: 180px;
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+#teachers-section::after {
+    content: "";
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 180px;
+    height: 180px;
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 50%;
+    z-index: 0;
+}

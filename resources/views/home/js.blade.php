@@ -18,7 +18,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
 <script>
@@ -48,20 +48,39 @@
 </script>
 
 <script>
- function toggleDescription(id) {
-    const shortDesc = document.getElementById('short-desc-' + id);
-    const fullDesc = document.getElementById('full-desc-' + id);
-    const btn = document.getElementById('toggle-btn-' + id);
+    function toggleDescription(id) {
+        const shortDesc = document.getElementById('short-desc-' + id);
+        const fullDesc = document.getElementById('full-desc-' + id);
+        const btn = document.getElementById('toggle-btn-' + id);
 
-    if (fullDesc.style.display === "none") {
-        fullDesc.style.display = "block";
-        shortDesc.style.display = "none";
-        btn.innerText = "Read Less";
-    } else {
-        fullDesc.style.display = "none";
-        shortDesc.style.display = "block";
-        btn.innerText = "Read More";
+        if (fullDesc.style.display === "none") {
+            fullDesc.style.display = "block";
+            shortDesc.style.display = "none";
+            btn.innerText = "Read Less";
+        } else {
+            fullDesc.style.display = "none";
+            shortDesc.style.display = "block";
+            btn.innerText = "Read More";
+        }
     }
-}
-
+</script>
+<script>
+    $(document).ready(function() {
+        $('.top-management-slider').owlCarousel({
+            loop: true,
+            margin: 20,
+            autoplay: true,
+            autoplayTimeout: 2500,
+            autoplayHoverPause: true,
+            smartSpeed: 700,
+            dots: true,
+            nav: false,
+            responsive: {
+                0: { items: 1 },
+                576: { items: 1 },
+                768: { items: 2 },
+                1200: { items: 3 }
+            }
+        });
+    });
 </script>

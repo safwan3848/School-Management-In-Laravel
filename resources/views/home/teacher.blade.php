@@ -1,4 +1,5 @@
-<div class="site-section" id="teachers-section">
+<div class="site-section position-relative" id="teachers-section" style="background: #f9fafb; padding: 80px 0;">
+
     <div class="container">
 
         <div class="row mb-5 justify-content-center">
@@ -13,7 +14,7 @@
         <div class="row">
 
             <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-                <div class="teacher text-center">
+                <div class="teacher-card text-center p-4">
                     <img src="{{ asset('frontend/images/person_1.jpg') }}" alt="Image"
                         class="img-fluid w-50 rounded-circle mx-auto mb-4">
                     <div class="py-2">
@@ -26,7 +27,7 @@
             </div>
 
             <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-                <div class="teacher text-center">
+                <div class="teacher-card text-center p-4">
                     <img src="{{ asset('frontend/images/person_2.jpg') }}" alt="Image"
                         class="img-fluid w-50 rounded-circle mx-auto mb-4">
                     <div class="py-2">
@@ -39,7 +40,7 @@
             </div>
 
             <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-                <div class="teacher text-center">
+                <div class="teacher-card text-center p-4">
                     <img src="{{ asset('frontend/images/person_3.jpg') }}" alt="Image"
                         class="img-fluid w-50 rounded-circle mx-auto mb-4">
                     <div class="py-2">
