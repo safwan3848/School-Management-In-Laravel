@@ -26,13 +26,3 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-    <style>
-        .gallery-slider img {
-            width: 100%;
-            height: 250px;
-            /* Fix image size */
-            object-fit: cover;
-            /* Crop image beautifully */
-            border-radius: 10px;
-        }
-    </style>

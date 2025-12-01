@@ -52,6 +52,10 @@
         @include('home.contact_us')
         {{-- contact us section end --}}
 
+        {{-- FAQ section start --}}
+        @include('home.faq')
+        {{-- FAQ section end --}}
+
         {{-- footer section start --}}
         @include('home.footer')
         {{-- footer section end --}}
