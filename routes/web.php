@@ -40,6 +40,8 @@ Route::prefix('admin')->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    // logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
     // Banner Management
     Route::prefix('banner')->group(function () {

@@ -2,81 +2,67 @@
 
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+            <i class="fas fa-school"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">School Admin</div>
     </a>
 
     <hr class="sidebar-divider my-0">
 
+    <!-- Dashboard -->
     <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.dashboard') }}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-home"></i>
             <span>Dashboard</span>
         </a>
     </li>
 
     <hr class="sidebar-divider">
 
-    <li
-        class="nav-item 
-        {{ request()->routeIs('banner.index') ||
-        request()->routeIs('banner.create') ||
-        request()->routeIs('banner.edit')
-            ? 'active'
-            : '' }}">
+    <!-- Banner -->
+    <li class="nav-item {{ request()->routeIs('banner.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('banner.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-images"></i>
             <span>Banner</span>
         </a>
     </li>
 
-    <li
-        class="nav-item 
-        {{ request()->routeIs('testimonial.index') ||
-        request()->routeIs('testimonial.create') ||
-        request()->routeIs('testimonial.edit')
-            ? 'active'
-            : '' }}">
+    <!-- Testimonial -->
+    <li class="nav-item {{ request()->routeIs('testimonial.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('testimonial.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-comments"></i>
             <span>Testimonial</span>
         </a>
     </li>
 
-    <li class="nav-item 
-        {{ request()->routeIs('contact.index') ? 'active' : '' }}">
+    <!-- Contact Us -->
+    <li class="nav-item {{ request()->routeIs('contact.index') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('contact.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-envelope-open-text"></i>
             <span>Contact Us</span>
         </a>
     </li>
 
-    <li
-        class="nav-item 
-        {{ request()->routeIs('gallery.index') || request()->routeIs('gallery.create') ? 'active' : '' }}">
+    <!-- Gallery -->
+    <li class="nav-item {{ request()->routeIs('gallery.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('gallery.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-photo-video"></i>
             <span>Gallery</span>
         </a>
     </li>
 
-    <li
-        class="nav-item 
-        {{ request()->routeIs('jobs.index') || request()->routeIs('jobs.create') || request()->routeIs('jobs.edit')
-            ? 'active'
-            : '' }}">
+    <!-- Jobs -->
+    <li class="nav-item {{ request()->routeIs('jobs.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('jobs.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-briefcase"></i>
             <span>Jobs</span>
         </a>
     </li>
 
-    <li
-        class="nav-item 
-        {{ request()->routeIs('career.index') || request()->routeIs('career.show') ? 'active' : '' }}">
+    <!-- Careers -->
+    <li class="nav-item {{ request()->routeIs('career.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('career.index') }}">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-user-graduate"></i>
             <span>Careers</span>
         </a>
     </li>
