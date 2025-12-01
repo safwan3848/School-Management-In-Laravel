@@ -9,12 +9,14 @@
                     <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
                         <li><a href="#home-section" class="nav-link">Home</a></li>
                         <li><a href="#events-section" class="nav-link">Events</a></li>
-                        <li><a href="#programs-section" class="nav-link">Programs</a></li>
                         <li><a href="#teachers-section" class="nav-link">Teachers</a></li>
                         @auth
-                            <li><a href="{{ route('logout') }}" 
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-                                class="nav-link">Logout</a></li>
+                            @if (auth()->user()->role === 'admin')
+                                <li><a href="{{ route('admin.dashboard') }}" class="nav-link">Dashboard</a></li>
+                            @endif
+                            <li><a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    class="nav-link">Logout</a></li>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf

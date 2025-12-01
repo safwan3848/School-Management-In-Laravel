@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\TopManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ContactController;
@@ -100,7 +101,7 @@ Route::prefix('admin')->group(function () {
             ->name('career.updateStatus');
     });
 
-     // Faq
+    // Faq
     Route::prefix('faq')->group(function () {
         Route::get('/', [FaqController::class, 'index'])->name('faq.index');          // List faqs
         Route::get('/create', [FaqController::class, 'create'])->name('faq.create');  // Create faq page
@@ -109,6 +110,17 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/{id}', [FaqController::class, 'update'])->name('faq.update'); // Update faq
         Route::get('/delete/{id}', [FaqController::class, 'delete'])->name('faq.delete'); // delete faq
         Route::get('/show/{id}', [FaqController::class, 'show'])->name('faq.show');
+    });
 
+
+    // Top Management
+    Route::prefix('management')->group(function () {
+        Route::get('/', [TopManagementController::class, 'index'])->name('management.index');          // List managements
+        Route::get('/create', [TopManagementController::class, 'create'])->name('management.create');  // Create management page
+        Route::post('/store', [TopManagementController::class, 'store'])->name('management.store');    // Save management
+        Route::get('/edit/{id}', [TopManagementController::class, 'edit'])->name('management.edit');   // Edit management page
+        Route::post('/update/{id}', [TopManagementController::class, 'update'])->name('management.update'); // Update management
+        Route::get('/delete/{id}', [TopManagementController::class, 'destroy'])->name('management.delete'); // delete management
+        Route::get('/show/{id}', [TopManagementController::class, 'show'])->name('management.show');
     });
 });

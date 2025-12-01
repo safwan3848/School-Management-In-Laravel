@@ -74,4 +74,12 @@
             <span>FAQs</span>
         </a>
     </li>
+
+    {{-- Top Management --}}
+    <li class="nav-item {{ request()->routeIs('management.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('management.index') }}">
+            <i class="fas fa-question-circle"></i>
+            <span>Top Management</span>
+        </a>
+    </li>
 </ul>
