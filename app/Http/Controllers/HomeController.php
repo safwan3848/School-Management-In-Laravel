@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\Event;
 use App\Models\Faq;
 use App\Models\Gallery;
 use App\Models\Testimonial;
@@ -20,6 +21,14 @@ class HomeController extends Controller
         $management = TopManagement::where('status', 1)
             ->orderBy('id', 'DESC')
             ->get();
-        return view('home.index', compact('banners', 'testimonials', 'galleries', 'faqs', 'management'));
+        $events = Event::where('status', 1)
+            ->orderBy('id', 'DESC')
+            ->get();
+        return view('home.index', compact('banners', 'testimonials', 'galleries', 'faqs', 'management', 'events'));
+    }
+
+    public function show($id) {
+        $event = Event::findOrFail($id);
+        return view('events.show', compact('event'));
     }
 }
