@@ -67,6 +67,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success px-4">Submit</button>
+                <a href="{{ route('banner.index') }}" class="btn btn-secondary ml-2">Cancel</a>
 
             </form>
 
