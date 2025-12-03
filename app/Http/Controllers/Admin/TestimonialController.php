@@ -9,9 +9,21 @@ use Spatie\Image\Image;
 
 class TestimonialController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $testimonials = Testimonial::latest()->paginate(5);
+        $query = Testimonial::select('id', 'title', 'image', 'background_image', 'description', 'status');
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $testimonials = $query->orderByDesc('id')->simplePaginate(10);
+        $testimonials->appends($request->all());
+
         return view('admin.testimonial.index', compact('testimonials'));
     }
 
