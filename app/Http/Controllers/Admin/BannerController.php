@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Spatie\Image\Image;
 
 class BannerController extends Controller
 {
@@ -28,7 +29,11 @@ class BannerController extends Controller
         ]);
 
         $imageName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('uploads/banner'), $imageName);
+        Image::load($request->image->path())
+            ->quality(75)
+            ->width(1920)
+            ->optimize()
+            ->save(public_path("uploads/banner/" . $imageName));
 
         Banner::create([
             'title' => $request->title,
@@ -58,8 +63,23 @@ class BannerController extends Controller
         $imageName = $banner->image;
 
         if ($request->hasFile('image')) {
+
+            // Delete old file if exists
+            $oldPath = public_path('uploads/banner/' . $banner->image);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+
+            // Create new optimized file name
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/banner'), $imageName);
+
+            // Optimize new image (Spatie)
+            Image::load($request->file('image'))
+                ->format('webp')
+                ->quality(75)
+                ->width(1920)
+                ->optimize()
+                ->save(public_path('uploads/banner/' . $imageName));
         }
 
         $banner->update([
@@ -73,7 +93,15 @@ class BannerController extends Controller
 
     public function delete($id)
     {
-        Banner::findOrFail($id)->delete();
+        $banner = Banner::findOrFail($id);
+        $imagePath = public_path('uploads/banner/' . $banner->image);
+
+        // Delete image if it exists
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        $banner->delete();
+
         return redirect()->route('banner.index')->with('success', 'Banner deleted successfully');
     }
 }

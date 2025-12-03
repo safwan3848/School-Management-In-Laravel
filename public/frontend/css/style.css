@@ -2002,3 +2002,21 @@ body {
     border-radius: 50%;
     z-index: 0;
 }
+
+/* Frontend Banner Image */
+.banner-slide {
+    height: 650px;
+    position: relative;
+    background-size: contain; /* better visual fit */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
+    display: flex;
+    align-items: center;
+}
