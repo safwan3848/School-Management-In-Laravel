@@ -75,7 +75,6 @@ class BannerController extends Controller
 
             // Optimize new image (Spatie)
             Image::load($request->file('image'))
-                ->format('webp')
                 ->quality(75)
                 ->width(1920)
                 ->optimize()
