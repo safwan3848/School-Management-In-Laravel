@@ -12,61 +12,140 @@
 
         <div class="card-body">
 
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('testimonial.update', $testimonial->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                {{-- @method('PUT') --}}
-
-                <div class="form-group">
-                    <label>Title <span class="text-danger">*</span></label>
-                    <input type="text" name="title" class="form-control" value="{{ $testimonial->title }}" required>
+                {{-- Title --}}
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Title <span class="text-danger">*</span></label>
+                    <input type="text" name="title" value="{{ old('title', $testimonial->title) }}"
+                        class="form-control @error('title') is-invalid @enderror" required>
+                    @error('title')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <div class="form-group">
-                    <label>Description <span class="text-danger">*</span></label>
-                    <textarea name="description" class="form-control" rows="4" required>{{ $testimonial->description }}</textarea>
+                {{-- Description --}}
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Description <span class="text-danger">*</span></label>
+                    <textarea name="description" rows="4" class="form-control @error('description') is-invalid @enderror" required>{{ old('description', $testimonial->description) }}</textarea>
+                    @error('description')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <div class="form-group">
-                    <label>Background Image</label><br>
-                    @if ($testimonial->background_image)
-                        <img src="{{ asset('uploads/testimonials/backgroundImage/' . $testimonial->background_image) }}"
-                            width="120" class="mb-2">
-                    @endif
-                    <input type="file" name="background_image" class="form-control">
+                {{-- User Image --}}
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">User Image</label>
+                    <input type="file" name="image" id="userImageInput"
+                        class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                    @error('image')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+
+                    {{-- Preview --}}
+                    <div id="userPreviewBox" class="mt-2"
+                        style="
+                    width: 100%;
+                    max-width: 350px;
+                    height: 180px;
+                    border: 1px dashed #888;
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    background: #f8f9fa;
+                ">
+                        @if ($testimonial->image)
+                            <img src="{{ asset('uploads/testimonials/userImage/' . $testimonial->image) }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">
+                        @else
+                            <span class="text-muted">No Image Selected</span>
+                        @endif
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>User Image</label><br>
-                    @if ($testimonial->image)
-                        <img src="{{ asset('uploads/testimonials/userImage/' . $testimonial->image) }}" width="120"
-                            class="mb-2">
-                    @endif
-                    <input type="file" name="image" class="form-control">
+                {{-- Background Image --}}
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Background Image</label>
+                    <input type="file" name="background_image" id="bgImageInput"
+                        class="form-control @error('background_image') is-invalid @enderror" accept="image/*">
+                    @error('background_image')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+
+                    {{-- Preview --}}
+                    <div id="bgPreviewBox" class="mt-2"
+                        style="
+                    width: 100%;
+                    max-width: 350px;
+                    height: 180px;
+                    border: 1px dashed #888;
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                    background: #f8f9fa;
+                ">
+                        @if ($testimonial->background_image)
+                            <img src="{{ asset('uploads/testimonials/backgroundImage/' . $testimonial->background_image) }}"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">
+                        @else
+                            <span class="text-muted">No Image Selected</span>
+                        @endif
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Status</label>
-                    <select name="status" class="form-control">
-                        <option value="1" @if ($testimonial->status == 1) selected @endif>Active</option>
-                        <option value="0" @if ($testimonial->status == 0) selected @endif>Inactive</option>
+                {{-- Status --}}
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Status</label>
+                    <select name="status" class="form-control @error('status') is-invalid @enderror">
+                        <option value="1" {{ old('status', $testimonial->status) == 1 ? 'selected' : '' }}>Active
+                        </option>
+                        <option value="0" {{ old('status', $testimonial->status) == 0 ? 'selected' : '' }}>Inactive
+                        </option>
                     </select>
+                    @error('status')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
                 </div>
 
-                <button class="btn btn-primary">Update</button>
+                {{-- Buttons --}}
+                <button type="submit" class="btn btn-success px-4">Update</button>
                 <a href="{{ route('testimonial.index') }}" class="btn btn-secondary ml-2">Cancel</a>
 
             </form>
         </div>
     </div>
+
+    {{-- Live Image Preview Script --}}
+    <script>
+        function previewImage(inputId, previewBoxId) {
+            const input = document.getElementById(inputId);
+            const previewBox = document.getElementById(previewBoxId);
+
+            input.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewBox.innerHTML = `<img src="${e.target.result}" style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: 6px;
+                    ">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewBox.innerHTML = `<span class="text-muted">No Image Selected</span>`;
+                }
+            });
+        }
+
+        previewImage('userImageInput', 'userPreviewBox');
+        previewImage('bgImageInput', 'bgPreviewBox');
+    </script>
 
 @endsection
