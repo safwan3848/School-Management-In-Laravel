@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\TopManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,17 @@ Route::post('login', [AuthController::class, 'loginPost'])->name('login');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/contact-store', [ContactController::class, 'store'])->name('contact.store');
+
+// google controller
+Route::controller(GoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
+
+Route::controller(FacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
 
 // about us 
 Route::get('/about-us', function () {
