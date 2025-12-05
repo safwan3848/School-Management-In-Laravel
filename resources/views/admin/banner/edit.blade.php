@@ -82,6 +82,7 @@
                 </div>
 
                 <button class="btn btn-primary px-4">Update</button>
+                <a href="{{ route('banner.index') }}" class="btn btn-secondary ml-2">Cancel</a>
 
             </form>
 

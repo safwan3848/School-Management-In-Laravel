@@ -10,6 +10,26 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        {{-- Search & Filter Form --}}
+        <form method="GET" class="mb-3 row g-2">
+            <div class="col-md-4">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                    placeholder="Search by Title">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                    <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+
+                <a href="{{ route('banner.index') }}" class="btn btn-secondary">Reset</a>
+            </div>
+        </form>
+
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="bg-primary text-white">
@@ -71,6 +91,7 @@
     </div>
 </div>
 
+{{-- Pagination --}}
 <div class="mt-3">
-    {{ $banners->links('pagination::bootstrap-5') }}
+    {{ $banners->appends(request()->query())->links('pagination::bootstrap-5') }}
 </div>

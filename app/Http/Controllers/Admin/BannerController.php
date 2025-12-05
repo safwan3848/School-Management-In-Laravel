@@ -9,9 +9,20 @@ use Spatie\Image\Image;
 
 class BannerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $banners = Banner::latest()->paginate(5);
+        $query = Banner::select('id', 'title', 'image', 'status');
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $banners = $query->orderByDesc('id')->paginate(5);
+        $banners->appends($request->all());
         return view('admin.banner.index', compact('banners'));
     }
 

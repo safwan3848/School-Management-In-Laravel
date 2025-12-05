@@ -21,7 +21,7 @@ class TestimonialController extends Controller
             $query->where('status', $request->status);
         }
 
-        $testimonials = $query->orderByDesc('id')->simplePaginate(10);
+        $testimonials = $query->orderByDesc('id')->paginate(2);
         $testimonials->appends($request->all());
 
         return view('admin.testimonial.index', compact('testimonials'));

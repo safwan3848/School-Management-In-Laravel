@@ -565,6 +565,14 @@
         height: 100%;
     }
 
+    .social-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
     /* Signup Link */
     .signup-link {
         text-align: center;
