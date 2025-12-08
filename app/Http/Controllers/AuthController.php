@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWelcomeEmailJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+
+use function Symfony\Component\Clock\now;
 
 class AuthController extends Controller
 {
@@ -31,6 +37,12 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role
         ]);
+        // For Simple Mail
+        // Mail::to($user->email)->send(new WelcomeMail($user));
+
+        // Using QUEUE Jobs
+        SendWelcomeEmailJob::dispatch($user)->delay(Carbon::now()->addSeconds(2));
+
         Auth::login($user);
 
         return redirect()->route('home')->with('success', 'User registered successfully');
