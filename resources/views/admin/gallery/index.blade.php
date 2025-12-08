@@ -5,20 +5,51 @@
 @section('content')
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+
+        <div class="card-header py-3 d-flex justify-content-between align-items-center flex-wrap">
             <h6 class="m-0 font-weight-bold text-primary">Gallery List</h6>
-            <a href="{{ route('gallery.create') }}" class="btn btn-primary btn-sm">Add Image</a>
-            <a href="{{ route('gallery.bulk.create') }}" class="btn btn-success btn-sm ml-2">Bulk Upload</a>
+
+            <div>
+                <a href="{{ route('gallery.create') }}" class="btn btn-primary btn-sm">Add Image</a>
+                <a href="{{ route('gallery.bulk.create') }}" class="btn btn-success btn-sm">Bulk Upload</a>
+            </div>
         </div>
 
         <div class="card-body">
 
+            {{-- Success Message --}}
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
+            {{-- Filters --}}
+            <form method="GET" action="{{ route('gallery.index') }}" class="mb-3">
+
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <input type="text" name="search" class="form-control" placeholder="Search by title"
+                            value="{{ request('search') }}">
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <select name="status" class="form-control">
+                            <option value="" selected>Status (All)</option>
+                            <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="{{ route('gallery.index') }}" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+
+            </form>
+
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0">
+
                     <thead class="bg-primary text-white">
                         <tr>
                             <th>ID</th>
@@ -35,7 +66,8 @@
                                 <td>{{ $item->id }}</td>
 
                                 <td>
-                                    <img src="{{ asset($item->image) }}" width="80" height="60" class="rounded">
+                                    <img src="{{ asset('uploads/gallery/' . $item->image) }}" width="80" height="60"
+                                        class="rounded">
                                 </td>
 
                                 <td>{{ $item->title ?? '—' }}</td>
@@ -58,7 +90,9 @@
 
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-danger">No gallery images found!</td>
+                                <td colspan="6" class="text-center text-danger">
+                                    No gallery images found!
+                                </td>
                             </tr>
                         @endforelse
                     </tbody>

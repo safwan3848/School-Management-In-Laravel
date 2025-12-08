@@ -14,8 +14,9 @@
             @foreach ($galleries as $gallery)
                 @if ($gallery->status == 1)
                     <div class="item">
-                        <a href="{{ asset($gallery->image) }}" class="image-popup">
-                            <img src="{{ asset($gallery->image) }}" alt="{{ $gallery->title ?? 'Gallery Image' }}">
+                        <a href="{{ asset('uploads/gallery/' . $gallery->image) }}" class="image-popup">
+                            <img src="{{ asset('uploads/gallery/' . $gallery->image) }}"
+                                alt="{{ $gallery->title ?? 'Gallery Image' }}">
                         </a>
                     </div>
                 @endif
