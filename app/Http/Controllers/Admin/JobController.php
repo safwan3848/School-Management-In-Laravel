@@ -8,10 +8,45 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = TeacherJob::latest()->get();
-        return view('admin.jobs.index', compact('jobs'));
+        $query = TeacherJob::select('id', 'title', 'department', 'location', 'type', 'status');
+
+        // Search
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter: Department
+        if ($request->filled('department')) {
+            $query->where('department', $request->department);
+        }
+
+        // Filter: Type
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Filter: Location
+        if ($request->filled('location')) {
+            $query->where('location', $request->location);
+        }
+
+        // Filter: Status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Pagination (with query strings)
+        $jobs = $query->orderByDesc('id')->paginate(10);
+        $jobs->appends($request->all());
+
+        // Dropdown filter values
+        $departments = TeacherJob::select('department')->distinct()->pluck('department');
+        $types       = TeacherJob::select('type')->distinct()->pluck('type');
+        $locations   = TeacherJob::select('location')->distinct()->pluck('location');
+
+        return view('admin.jobs.index', compact('jobs', 'departments', 'types', 'locations'));
     }
 
     public function create()
@@ -19,54 +54,50 @@ class JobController extends Controller
         return view('admin.jobs.create');
     }
 
-    // Store job
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string',
-            'department' => 'required',
-            'location' => 'required',
-            'description' => 'required',
-            'type' => 'required',
-            'status' => 'required',
-        ]);
+        $data = $this->validateData($request);
+        TeacherJob::create($data);
 
-        // dd($request->all());
-        TeacherJob::create($request->all());
-
-        return redirect()->route('jobs.index')->with('success', 'Job created successfully');
+        return redirect()->route('jobs.index')
+            ->with('success', 'Job created successfully');
     }
 
-    // Edit form
     public function edit($id)
     {
         $job = TeacherJob::findOrFail($id);
         return view('admin.jobs.edit', compact('job'));
     }
 
-    // Update
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string',
-            'department' => 'required',
-            'location' => 'required',
-            'description' => 'required',
-            'type' => 'required',
-            'status' => 'required',
-        ]);
         $job = TeacherJob::findOrFail($id);
-        $job->update($request->all());
+        $data = $this->validateData($request);
 
-        return redirect()->route('jobs.index')->with('success', 'Job updated successfully');
+        $job->update($data);
+
+        return redirect()->route('jobs.index')
+            ->with('success', 'Job updated successfully');
     }
 
-    // Delete
     public function destroy($id)
     {
         $job = TeacherJob::findOrFail($id);
         $job->delete();
 
-        return redirect()->route('jobs.index')->with('success', 'Job deleted successfully');
+        return redirect()->route('jobs.index')
+            ->with('success', 'Job deleted successfully');
+    }
+
+    private function validateData(Request $request)
+    {
+        return $request->validate([
+            'title'       => 'required|string|max:255',
+            'department'  => 'required|string|max:255',
+            'location'    => 'required|string|max:255',
+            'description' => 'required|string',
+            'type'        => 'required|string|max:255',
+            'status'      => 'required|in:0,1',
+        ]);
     }
 }
