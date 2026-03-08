@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
 
+// Modern demo frontend (Tailwind-based)
+Route::get('/modern', function () {
+    return view('home.modern_index');
+})->name('modern.home');
+
 Route::get('register', [AuthController::class, 'register'])->name('frontend.register');
 Route::post('register', [AuthController::class, 'registerPost'])->name('register.post');
 
@@ -27,7 +32,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/contact-store', [ContactController::class, 'store'])->name('contact.store');
 
-// about us 
+// about us
 Route::get('/about-us', function () {
     return view('home.about');
 })->name('about.us');
@@ -73,7 +78,7 @@ Route::prefix('admin')->group(function () {
             ->name('contact.updateEnquiryType');
     });
 
-    // Gallery 
+    // Gallery
     Route::prefix('gallery')->group(function () {
         Route::get('/', [GalleryController::class, 'index'])->name('gallery.index');
         Route::get('/create', [GalleryController::class, 'create'])->name('gallery.create');
