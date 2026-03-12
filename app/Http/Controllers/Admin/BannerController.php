@@ -5,12 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Spatie\Image\Image;
 
 class BannerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $banners = Banner::latest()->paginate(5);
+        $query = Banner::select('id', 'title', 'image', 'status');
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $banners = $query->orderByDesc('id')->paginate(5);
+        $banners->appends($request->all());
         return view('admin.banner.index', compact('banners'));
     }
 
@@ -28,7 +40,11 @@ class BannerController extends Controller
         ]);
 
         $imageName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('uploads/banner'), $imageName);
+        Image::load($request->image->path())
+            ->quality(75)
+            ->width(1920)
+            ->optimize()
+            ->save(public_path("uploads/banner/" . $imageName));
 
         Banner::create([
             'title' => $request->title,
@@ -58,8 +74,22 @@ class BannerController extends Controller
         $imageName = $banner->image;
 
         if ($request->hasFile('image')) {
+
+            // Delete old file if exists
+            $oldPath = public_path('uploads/banner/' . $banner->image);
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+
+            // Create new optimized file name
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('uploads/banner'), $imageName);
+
+            // Optimize new image (Spatie)
+            Image::load($request->file('image'))
+                ->quality(75)
+                ->width(1920)
+                ->optimize()
+                ->save(public_path('uploads/banner/' . $imageName));
         }
 
         $banner->update([
@@ -73,7 +103,15 @@ class BannerController extends Controller
 
     public function delete($id)
     {
-        Banner::findOrFail($id)->delete();
+        $banner = Banner::findOrFail($id);
+        $imagePath = public_path('uploads/banner/' . $banner->image);
+
+        // Delete image if it exists
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        $banner->delete();
+
         return redirect()->route('banner.index')->with('success', 'Banner deleted successfully');
     }
 }

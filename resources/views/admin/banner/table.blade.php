@@ -5,55 +5,83 @@
     </div>
 
     <div class="card-body">
+
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        {{-- Search & Filter Form --}}
+        <form method="GET" class="mb-3 row g-2">
+            <div class="col-md-4">
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                    placeholder="Search by Title">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
+                    <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filter</button>
+
+                <a href="{{ route('banner.index') }}" class="btn btn-secondary">Reset</a>
+            </div>
+        </form>
+
         <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover">
                 <thead class="bg-primary text-white">
                     <tr>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Image</th>
                         <th>Status</th>
-                        <th width="150px">Action</th>
+                        <th width="150">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @forelse($banners as $banner)
+                    @forelse ($banners as $banner)
                         <tr>
                             <td>{{ $banner->id }}</td>
+
                             <td>{{ $banner->title }}</td>
+
                             <td>
                                 @if ($banner->image)
-                                    <img src="{{ asset('uploads/banner/' . $banner->image) }}" width="80"
-                                        height="40">
+                                    <img src="{{ asset('uploads/banner/' . $banner->image) }}"
+                                        alt="{{ $banner->title }}" width="80" height="40"
+                                        class="rounded border" />
                                 @else
-                                    No Image
-                                @endif
-                            </td>
-                            <td>
-                                @if ($banner->status == 1)
-                                    <span class="badge badge-success">Active</span>
-                                @else
-                                    <span class="badge badge-danger">Inactive</span>
+                                    <span class="text-muted">No Image</span>
                                 @endif
                             </td>
 
                             <td>
-                                <a href="{{ route('banner.edit', $banner->id) }}"
-                                    class="btn btn-warning btn-sm">Edit</a>
+                                <span class="badge badge-{{ $banner->status ? 'success' : 'danger' }}">
+                                    {{ $banner->status ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <a href="{{ route('banner.edit', $banner->id) }}" class="btn btn-warning btn-sm">
+                                    Edit
+                                </a>
+
                                 <a href="{{ route('banner.delete', $banner->id) }}"
-                                    onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">
+                                    onclick="return confirm('Are you sure you want to delete this banner?')"
+                                    class="btn btn-danger btn-sm">
                                     Delete
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-danger">No banners found!</td>
+                            <td colspan="5" class="text-center text-danger py-3">
+                                No banners found!
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -62,6 +90,8 @@
         </div>
     </div>
 </div>
+
+{{-- Pagination --}}
 <div class="mt-3">
-    {{ $banners->links('pagination::bootstrap-5') }}
+    {{ $banners->appends(request()->query())->links('pagination::bootstrap-5') }}
 </div>

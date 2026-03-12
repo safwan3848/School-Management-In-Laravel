@@ -1,27 +1,41 @@
 <div id="testimonialCarousel" class="carousel slide" data-ride="carousel" data-interval="2000">
+
+    {{-- Indicators --}}
     <ol class="carousel-indicators">
         @foreach ($testimonials as $i => $t)
             <li data-target="#testimonialCarousel" data-slide-to="{{ $i }}"
-                class="{{ $i === 0 ? 'active' : '' }}"></li>
+                class="{{ $loop->first ? 'active' : '' }}"></li>
         @endforeach
     </ol>
 
+    {{-- Carousel Items --}}
     <div class="carousel-inner">
-        @foreach ($testimonials as $index => $item)
-            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+        @foreach ($testimonials as $item)
+            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                 <div class="site-section bg-image overlay"
-                    style="background-image: url('{{ asset('uploads/testimonials/backgroundImage/' . ($item->background_image ?? '')) }}');">
+                    style="background-image: url('{{ $item->background_image
+                        ? asset('uploads/testimonials/backgroundImage/' . $item->background_image)
+                        : asset('default-background.jpg') }}');">
+
                     <div class="container">
                         <div class="row justify-content-center align-items-center">
                             <div class="col-md-8 text-center testimony py-5">
+
+                                {{-- User Image --}}
                                 @if ($item->image)
                                     <img src="{{ asset('uploads/testimonials/userImage/' . $item->image) }}"
-                                        alt="User Image" class="img-fluid w-25 mb-4 rounded-circle">
+                                        alt="{{ $item->title }}" class="img-fluid w-25 mb-4 rounded-circle"
+                                        loading="lazy">
                                 @endif
+
+                                {{-- Title --}}
                                 <h3 class="mb-4">{{ $item->title }}</h3>
+
+                                {{-- Description --}}
                                 <blockquote>
                                     <p>&ldquo; {{ $item->description }} &rdquo;</p>
                                 </blockquote>
+
                             </div>
                         </div>
                     </div>
@@ -30,18 +44,14 @@
         @endforeach
     </div>
 
+    {{-- Controls --}}
     <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
-
     <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-</div>
 
-{{-- <!-- Bootstrap 4 JS (include popper and jquery if not present) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script> --}}
+</div>

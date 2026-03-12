@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ContactUsController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\JobController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\Admin\TopManagementController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FacebookController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +35,17 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/contact-store', [ContactController::class, 'store'])->name('contact.store');
 
+// google controller
+Route::controller(GoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
+
+Route::controller(FacebookController::class)->group(function(){
+    Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
+    Route::get('auth/facebook/callback', 'handleFacebookCallback');
+});
+
 // about us
 Route::get('/about-us', function () {
     return view('home.about');
@@ -42,6 +56,8 @@ Route::get('/career', [CareerController::class, 'index'])->name('career.page');
 Route::post('/career/apply', [CareerController::class, 'apply'])->name('career.apply');
 Route::get('/job-details/{id}', [CareerController::class, 'jobDetails']);
 
+// event list
+Route::get('/events/{id}', [HomeController::class, 'show'])->name('events.show');
 
 Route::prefix('admin')->group(function () {
 
@@ -117,7 +133,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/show/{id}', [FaqController::class, 'show'])->name('faq.show');
     });
 
-
     // Top Management
     Route::prefix('management')->group(function () {
         Route::get('/', [TopManagementController::class, 'index'])->name('management.index');          // List managements
@@ -127,5 +142,15 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/{id}', [TopManagementController::class, 'update'])->name('management.update'); // Update management
         Route::get('/delete/{id}', [TopManagementController::class, 'destroy'])->name('management.delete'); // delete management
         Route::get('/show/{id}', [TopManagementController::class, 'show'])->name('management.show');
+    });
+
+    Route::prefix('events')->group(function () {
+        Route::get('/', [EventController::class, 'index'])->name('events.index');          // List eventss
+        Route::get('/create', [EventController::class, 'create'])->name('events.create');  // Create events page
+        Route::post('/store', [EventController::class, 'store'])->name('events.store');    // Save events
+        Route::get('/edit/{id}', [EventController::class, 'edit'])->name('events.edit');   // Edit events page
+        Route::post('/update/{id}', [EventController::class, 'update'])->name('events.update'); // Update events
+        Route::get('/delete/{id}', [EventController::class, 'destroy'])->name('events.destroy'); // delete events
+        Route::get('/show/{id}', [EventController::class, 'show'])->name('events.show');
     });
 });
